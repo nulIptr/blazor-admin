@@ -1,0 +1,72 @@
+﻿@page "/register"
+@using BlazorAdmin.Client.Services.Implementations
+@using BlazorAdmin.Shared.Common
+@layout LoginLayout
+@inject NavigationManager navigationManager
+@inject IdentityAuthenticationStateProvider authStateProvider
+
+    <h1 style="text-align: center; color: #eee;">Register</h1>
+    <Form Model="@registerParameters"
+          LabelCol="new ColLayoutParam {Span = 24}"
+          WrapperCol="new ColLayoutParam {Span = 24}"
+          OnFinish="OnSubmit">
+        <FormItem>
+
+            <Input Placeholder="Username" Size="@InputSize.Large" @bind-Value="@registerParameters.UserName">
+            <Prefix>
+                <Icon Type="user" />
+            </Prefix>
+            </Input>
+        </FormItem>
+        <FormItem>
+            <InputPassword @bind-Value="@registerParameters.Password" Placeholder="Password" Size="@InputSize.Large">
+                <Prefix>
+                    <Icon Type="lock" />
+                </Prefix>
+            </InputPassword>
+
+
+        </FormItem>
+        <FormItem>
+            <InputPassword @bind-Value="@registerParameters.PasswordConfirm" Placeholder="PasswordConfirm" Size="@InputSize.Large">
+                <Prefix>
+                    <Icon Type="lock" />
+                </Prefix>
+            </InputPassword>
+
+
+        </FormItem>
+        <FormItem WrapperCol="new ColLayoutParam {Offset = 4, Span = 16}">
+            <div style="flex-direction: row; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <NavLink href="login">
+                    <h6 class="font-weight-normal text-center">Already have an account? Click here to login</h6>
+                </NavLink>
+                <Button Type="@ButtonType.Primary" HtmlType="submit">
+                    Submit
+                </Button>
+            </div>
+
+
+        </FormItem>
+    </Form>
+
+
+@functions{
+
+    RegisterParameters registerParameters { get; set; } = new RegisterParameters();
+    string error { get; set; }
+
+    async Task OnSubmit()
+    {
+        error = null;
+        try
+        {
+            await authStateProvider.Register(registerParameters);
+            navigationManager.NavigateTo("");
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
+    }
+}

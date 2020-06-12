@@ -1,0 +1,60 @@
+﻿@page "/login"
+@using BlazorAdmin.Client.Services.Implementations
+@using BlazorAdmin.Shared.Common
+@layout LoginLayout
+@inject NavigationManager navigationManager
+@inject IdentityAuthenticationStateProvider authStateProvider
+<h1 style="text-align: center; color: #eee;">Login</h1>
+<Form Model="@loginParameters"
+      LabelCol="new ColLayoutParam {Span = 24}"
+      WrapperCol="new ColLayoutParam {Span = 24}"
+      OnFinish="OnSubmit">
+    <FormItem>
+
+        <Input Placeholder="Username" Size="@InputSize.Large" @bind-Value="@loginParameters.UserName">
+            <Prefix>
+                <Icon Type="user"/>
+            </Prefix>
+        </Input>
+    </FormItem>
+    <FormItem>
+        <InputPassword @bind-Value="@loginParameters.Password" Placeholder="Password" Size="@InputSize.Large">
+            <Prefix>
+                <Icon Type="lock"/>
+            </Prefix>
+        </InputPassword>
+
+
+    </FormItem>
+    <FormItem WrapperCol="new ColLayoutParam {Offset = 4, Span = 16}">
+        <div style="flex-direction: row; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <Checkbox @bind-Value="loginParameters.RememberMe" Style="color: #eee;">Remember me</Checkbox>
+
+            <Button Type="@ButtonType.Primary" HtmlType="submit">
+                Submit
+            </Button>
+        </div>
+
+
+    </FormItem>
+</Form>
+
+@code{
+    LoginParameters loginParameters { get; set; } = new LoginParameters();
+    string error { get; set; }
+
+    async Task OnSubmit()
+    {
+        error = null;
+        try
+        {
+            await authStateProvider.Login(loginParameters);
+            navigationManager.NavigateTo("");
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
+    }
+
+}
