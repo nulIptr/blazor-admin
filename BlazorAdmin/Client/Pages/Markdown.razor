@@ -1,0 +1,45 @@
+﻿@page "/md"
+@using Markdig
+
+@layout MainLayout
+
+
+<div>
+    <Card Bordered Title=@("Editor")>
+        <Body>
+        <TextArea @bind-Value="@ContentValue"></TextArea>
+        </Body>
+    </Card>
+
+    <Card Bordered Title=@("Preview")>
+        @*<Extra>
+            <a>More</a>
+        </Extra>*@
+        <Body>
+        @if (ContentValue == null)
+        {
+            <span>Loading...</span>
+        }
+        else
+        {
+            @((MarkupString) BuildHtmlFromMarkdown(ContentValue))
+        }
+        </Body>
+    </Card>
+
+
+</div>
+
+@code
+{
+    protected string ContentValue { get; set; }
+
+
+    static string BuildHtmlFromMarkdown(string value) => Markdig.Markdown.ToHtml(
+        value,
+        MarkdownPipeline
+        );
+
+    private static readonly MarkdownPipeline MarkdownPipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+
+}

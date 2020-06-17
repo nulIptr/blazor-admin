@@ -4,43 +4,32 @@
 @inject IdentityAuthenticationStateProvider authStateProvider
 
 
-
 <AuthorizeView>
     <Authorized>
         <Layout>
             <Header Class="header">
 
-                <Row Justify="space-between">
-                    <span class="logo">LOGO</span>
-                    <Icon Type="logout" @onclick="LogoutClick"></Icon>
+                <Row Justify="space-between" Align="middle" >
+                    <span class="logo"></span>
+                    <Button Type="link" Icon="logout" @onclick="LogoutClick" >Logout</Button>
                 </Row>
             </Header>
             <Layout>
                 <Sider Width="200" Class="site-layout-background">
                     <Menu Mode="MenuMode.Inline"
                           Style="height: 100%; border-right: 0;">
-                        @{
-                            RenderFragment sub1Title =
-                            @<span>
-                                <Icon Type="user" Theme="outline" />
-                                subnav 1
-                            </span>;
-                        }
-                        <SubMenu Key="sub1" Title=sub1Title>
-                            <MenuItem Key="1">option1</MenuItem>
-                            <MenuItem Key="2">option2</MenuItem>
-                            <MenuItem Key="3">option3</MenuItem>
-                            <MenuItem Key="4">option4</MenuItem>
-                        </SubMenu>
+                        <MenuItem Key="1">
+                            <MenuLink href="/md" Match="NavLinkMatch.All">markdown demo</MenuLink>
+                        </MenuItem>
                     </Menu>
                 </Sider>
-                <Layout Style=" padding: 0 24px 24px;">
-                    <Breadcrumb Style="margin: 16px 0;">
+                <Layout Style="padding: 0 24px 24px;">
+                    @*<Breadcrumb Style="margin: 16px 0;">
                         <BreadcrumbItem>Home</BreadcrumbItem>
                         <BreadcrumbItem>List</BreadcrumbItem>
                         <BreadcrumbItem>App</BreadcrumbItem>
-                    </Breadcrumb>
-                    <Content Class="site-layout-background" Style=" padding: 24px; margin: 0; min-height: 280px;">
+                    </Breadcrumb>*@
+                    <Content Class="site-layout-background" Style="padding: 24px; margin: 0; min-height: 280px;">
                         @Body
                     </Content>
                 </Layout>
@@ -55,12 +44,9 @@
         height: 31px;
         background: rgba(255, 255, 255, 0.2);
         margin: 16px 28px 16px 0;
-        float: left;
     }
 
-    .site-layout-background {
-        background: #fff;
-    }
+    .site-layout-background { background: #fff; }
 </style>
 
 
@@ -82,4 +68,5 @@
         await authStateProvider.Logout();
         navigationManager.NavigateTo("/login");
     }
+
 }
